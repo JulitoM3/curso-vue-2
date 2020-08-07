@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Condicionales</title>
+</head>
+
+<body>
+
+    <div id="app" class="container">
+        {{ $data }}
+        <br>
+        <h4>¿Has trabajado con vue 2?</h4>
+        <div class="radio">
+            <label class="radio-inline">
+                <input type="radio" name="trabajo" :value="true" v-model="formulario.experiencia"> SÍ
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="trabajo" :value="false" v-model="formulario.experiencia"> NO
+            </label>
+        </div>
+        <template v-if="formulario.experiencia">
+            <div class="form-group">
+                <label>¿Cuantos años tienes trabajando con vue?</label>
+                <input type="number" name="numero" class="form-control" min="0" value=0 
+                v-model="formulario.años">
+            </div>
+            <div class="form-group" v-if="formulario.años<=1">
+                <label>¿Qué te motivó a aprender Vue.js?</label>
+                <textarea rows="4" class="form-control" v-model="formulario.descripcion"></textarea>
+            </div>
+            <template v-else-if="formulario.años>=2">
+                <div class="form-group" >
+                    <label>Cuenta tu experiencia con vue.js</label>
+                    <textarea rows="4" class="form-control" v-model="formulario.descripcion"></textarea>
+                </div>
+            </template>
+        </template>
+        <template v-if="formulario.descripcion == '' && formulario.experiencia">
+            {{formulario.error}}
+        </template>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                formulario: {
+                    experiencia: '',
+                    años: '',
+                    descripcion: '',
+                    error : 'Por favor llene el campo anterior'
+                },
+            }
+        })
+    </script>
+</body>
+
+</html>
