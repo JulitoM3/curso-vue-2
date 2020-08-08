@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Tasks</title>
+</head>
+<div id="app" class="container">
+    <h4>Todas las tareas</h4>
+    <ol>
+        <li v-for="(task, index) in tasks">
+            {{ task.titulo }}
+        </li>
+    </ol>
+
+    <h4>Agregar tarea nueva pendiente</h4>
+    <form action="" v-on:submit="createTask">
+        <input type="text" class="form-control" v-on:keyup.enter="createTask" v-model="newTask">
+        <input type="submit" value="Agregar" class="btn btn-success">
+    </form>
+    <br>
+    <template>
+        <h4 v-if="Completadas.length">Tareas completadas</h4>
+        <ol>
+            <li v-for="task in Completadas" v-bind:class="CompletedStyle">
+                {{task.titulo}}
+            </li>
+        </ol>
+    </template>
+
+    <template v-if="Pendientes.length">
+        <h4>Tareas pendientes</h4>
+        <br>
+        <ol>
+            <li v-for="(tarea,index) in Pendientes" v-bind:class="IncompletedStyle">
+                {{ tarea.titulo }}
+                <button class="btn btn-success btn-sm" v-on:click="completedTask(tarea)">Marcar como terminada</button>
+                <button class="btn btn-danger btn-sm" v-on:click="deleteTask(index)">Eliminar</button>
+                <hr>
+            </li>
+        </ol>
+    </template>
+
+
+
+</div>
+
+<body>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                newTask: '',
+                tasks: [{
+                        titulo: 'Crear html',
+                        pendiente: true
+                    },
+                    {
+                        titulo: 'Comenzar con codigo vue',
+                        pendiente: true
+                    }
+
+                ]
+            },
+            computed: {
+                Pendientes: function () {
+                    return this.tasks.filter((tarea) => {
+                        return tarea.pendiente
+                    });
+                },
+                Completadas: function () {
+                    return this.tasks.filter((tarea) => {
+                        return !tarea.pendiente;
+                    })
+                },
+                IncompletedStyle: function(){
+                    return 'alert alert-danger'
+                },
+                CompletedStyle: function(){
+                    return 'alert alert-success'
+                }
+            },
+            methods: {
+                createTask: function (e) {
+                    e.preventDefault();
+                    this.tasks.push({
+                        titulo: this.newTask,
+                        pendiente: true
+                    })
+                },
+                completedTask: function (tarea) {
+                    tarea.pendiente = false
+                },
+                deleteTask: function (indice) {
+                    this.tasks.splice(indice, 1, );
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
